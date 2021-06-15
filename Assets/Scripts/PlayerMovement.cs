@@ -10,9 +10,8 @@ public class PlayerMovement : MonoBehaviour {
     private float x;
     private float y;
     
-    public Animator anim;
+    public PlayerAnimationController anim;
     public LayerMask interactableMask;
-    GameObject box;
 
     [Header("Stats")]
     public float speed = 10;
@@ -24,6 +23,7 @@ public class PlayerMovement : MonoBehaviour {
 
 
     [Header("Bools")]
+    private bool  canMove;
     private bool pushing;
     private bool grounded;
 
@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour {
         get => pushing;
         set {
             pushing = value;
-            anim.SetBool("Pushing",pushing);
+            anim.SetPushingAnimation(pushing);
             speed = (pushing) ? pushingSpeed : 10;
 
         }
@@ -41,7 +41,15 @@ public class PlayerMovement : MonoBehaviour {
         get => grounded;
         set {
             grounded = value;
-            anim.SetBool("Grounded",grounded);
+            anim.SetGroundedAnimation(grounded);
+        }
+    }
+
+    public bool CanMove{
+        get => canMove;
+        set {
+            canMove = value;
+            MovementConstraints(!value);
         }
     }
     
@@ -51,62 +59,49 @@ public class PlayerMovement : MonoBehaviour {
     void Start() {
         rb = GetComponent<Rigidbody2D>();
         feet = this.gameObject.transform.GetChild(0).GetComponent<Transform>();
-        anim = GetComponent<Animator>();
+        anim = GetComponent<PlayerAnimationController>();
         groundLayers = LayerMask.GetMask("Ground");
+        CanMove = true;
     }
 
     // Update is called once per frame
     void Update() {
 
-        Vector2 dir = GetInputs();
-
-        //clear raycast to push
-        Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.right * transform.localScale.x,interactDistance,interactableMask);
-
-        Move(dir);
         isGrounded();
+        
+        if(CanMove) {
+            Vector2 dir = GetInputs();
 
-        if (Input.GetButtonDown("Jump") && Grounded) {
-            Jump();
-        }
+            //clear raycast to push
+            Physics2D.queriesStartInColliders = false;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.right * transform.localScale.x,interactDistance,interactableMask);
 
-        //Better jump gravity modifiers
-        if (rb.velocity.y < 0) {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (rb.velocity.y > 0 && !Input.GetButton("Jump")) {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
+            Move(dir);
+            
 
-        //Running animator
-        if (rb.velocity.x != 0) {
-            Vector3 playerScale = this.transform.localScale;
-            float scaleX = playerScale.x;
-            anim.SetBool("Running", true);
-            if(Pushing == false) {
-                if (rb.velocity.x > 0) {
-                    scaleX = 1f;
-                }
-                else {
-                    scaleX = -1f;
-                }
+            if (Input.GetButtonDown("Jump") && Grounded) {
+                Jump();
             }
-            this.transform.localScale = new Vector3(scaleX, playerScale.y, playerScale.z);
-        }
-        else anim.SetBool("Running", false);
 
-        //Jump animator
-        if (rb.velocity.y < 0.5f && !grounded){
-            anim.SetBool("Falling", true);
-        } else anim.SetBool("Falling", false);
-
-        //box push
-        if(Input.GetKeyUp(KeyCode.E)) {
-            if (hit.collider != null && hit.collider.gameObject.tag == "Interactable") {
-                Interact(hit);
+            //Better jump gravity modifiers
+            if (rb.velocity.y < 0) {
+                rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
             }
+            else if (rb.velocity.y > 0 && !Input.GetButton("Jump")) {
+                rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+            }
+
+            //interact
+            if(Input.GetKeyDown(KeyCode.E)) {
+                if (hit.collider != null && hit.collider.gameObject.tag == "Interactable") {
+                    Interact(hit);
+                }
+            }            
         }
+
+        /*if(Input.GetKeyDown(KeyCode.Q)) {
+            CanMove = !CanMove;
+        }*/
     }
 
     private Vector2 GetInputs() {
@@ -125,11 +120,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public bool isGrounded() {
         Collider2D groundCheck = Physics2D.OverlapCircle(feet.position, 0.5f, groundLayers);
-        if (groundCheck != null)
-            Grounded = true;
-        else {
-            Grounded = false;
-        }
+        Grounded = (groundCheck != null) ? true : false;
         return(Grounded);
     }
 
@@ -141,5 +132,14 @@ public class PlayerMovement : MonoBehaviour {
     private void Interact(RaycastHit2D hit) {
         GameObject obj = hit.collider.gameObject;
         obj.GetComponent<Interactable>().OnInteract();
+    }
+
+    void MovementConstraints(bool on) {
+        if(on) {
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+        }else {
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
     }
 }
