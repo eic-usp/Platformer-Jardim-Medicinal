@@ -7,6 +7,7 @@ public class PlayerAnimationController : MonoBehaviour {
     public Rigidbody2D rb;
     private bool grounded = true;
     private bool pushing = false;
+    private Vector3 lastPos;
     public Animator anim;
 
 
@@ -55,7 +56,10 @@ public class PlayerAnimationController : MonoBehaviour {
     }
 
     bool IsMoving() {
-        return (rb.velocity.x > 0.1f || rb.velocity.x < -0.1f);
+        /*Vector3 displacement = this.transform.position - lastPos;
+        lastPos = this.transform.position;
+        return (displacement.magnitude > 0f);*/
+        return(rb.velocity.x > 0.1f || rb.velocity.x < -0.1f);
     }
 
 

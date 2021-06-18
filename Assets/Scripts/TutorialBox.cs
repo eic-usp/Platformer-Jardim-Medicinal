@@ -7,10 +7,14 @@ public class TutorialBox : MonoBehaviour {
     public GameObject text;
 
     private void OnTriggerEnter2D(Collider2D other) {
-        text.SetActive(true);
+        if(other.tag == "Player") { 
+            text.SetActive(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other) {
-        text.SetActive(false);
+        if(other.tag == "Player") { 
+            text.SetActive(false);
+        }
     }
 }

@@ -26,6 +26,7 @@ public class DroneMovement : MonoBehaviour {
     public float holdTimer;
 
     [Header("Bools")]
+    private bool onFlyingZone;
     private bool  canMove;
 
 
@@ -45,15 +46,14 @@ public class DroneMovement : MonoBehaviour {
         feet = this.gameObject.transform.GetChild(0).GetComponent<Transform>();
         player = GameObject.Find("PlayerSprite");
         groundLayers = LayerMask.GetMask("Ground");
+        onFlyingZone = true;
         ChangeModeTo(WITHPLAYER);
     }
 
     // Update is called once per frame
     void Update() {
         if(mode == WITHPLAYER) {
-            Debug.Log("update WITHPLAYER");
             this.transform.position = player.GetComponent<Transform>().position;
-            Debug.Log("Chagned position to player");
             if(Input.GetKeyDown(KeyCode.Q)) {
                 ChangeModeTo(FLYING);
             }
@@ -72,11 +72,15 @@ public class DroneMovement : MonoBehaviour {
         }
         else if(mode == DISCONNECTED) {
             if(Input.GetKeyDown(KeyCode.Q)) {
-                //try to connect
+                if(onFlyingZone) {
+                    ChangeModeTo(FLYING);
+                }
             }
         }
 
-        DetectHoldButton();
+        if(DetectHoldButton(KeyCode.Q, 2f)) {//change 2f to a variable later
+            ChangeModeTo(WITHPLAYER);
+        }
 
 
 
@@ -89,31 +93,21 @@ public class DroneMovement : MonoBehaviour {
     }
 
     private void Move(Vector2 dir) {
+        if(HasPlayerOnTop() && dir.y > 0) dir.y = 0f;
         rb.velocity = new Vector2(dir.x * speed, dir.y * speed);
     }
 
 
-    void MovementConstraints(bool on) {
-        if(on) {
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        }else {
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
-    }
-
-
-    //TODO
-    //Change to recive keycode as argument and maybe a float too?
-    void DetectHoldButton() {
-        if(Input.GetKey(KeyCode.Q)) {
+    bool DetectHoldButton(KeyCode action, float time) {
+        if(Input.GetKey(action)) {
             holdTimer += Time.deltaTime;
-            if(holdTimer > 2f) {
+            if(holdTimer > time) {
                 this.rb.simulated = false;
-                ChangeModeTo(WITHPLAYER);
                 holdTimer = 0f;
+                return true;
             }
         }else holdTimer = 0f;
+        return false;
     }
     
     public void ChangeModeTo(int m) {
@@ -142,5 +136,28 @@ public class DroneMovement : MonoBehaviour {
             MovementConstraints(false);
             this.rb.gravityScale = 2;
         }
+    }
+
+
+    bool HasPlayerOnTop() {
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.up * transform.localScale.x, 1f, LayerMask.GetMask("Player"));
+        if(hit.rigidbody != null && hit.rigidbody.tag == "Player") {
+            return(true);
+        }
+        else return (false);
+    }
+
+    void MovementConstraints(bool on) {
+        if(on) {
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }else {
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+    }
+
+    public void SetOnFlyingZone(bool value) {
+        onFlyingZone = value;
     }
 }

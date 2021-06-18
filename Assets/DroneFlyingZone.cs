@@ -7,7 +7,14 @@ public class DroneFlyingZone : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D other) {
         if(other.tag == "Drone" && drone.mode != 0) {
+            drone.SetOnFlyingZone(false);
             drone.ChangeModeTo(3);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "Drone") {
+            drone.SetOnFlyingZone(true);
         }
     }
 }
