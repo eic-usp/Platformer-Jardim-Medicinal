@@ -6,7 +6,11 @@ using UnityEngine;
 public class GameState : ScriptableObject{
     public bool[] plantsObtained;
 
-    /*void SetPlantAsCollected(int i) {
+    public void SetPlantAsCollected(int i) {
         plantsObtained[i] = true;
-    }*/
+    }
+
+    public bool GetPlantState(int number) {
+        return (plantsObtained[number]);
+    }
 }

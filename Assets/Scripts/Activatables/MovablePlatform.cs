@@ -6,6 +6,7 @@ public class MovablePlatform : MonoBehaviour, Activatable {
     public GameObject platform;
     public Transform[] positionsArray;
     public int position = 0;
+    public float speed = 1;
     private bool isMoving = false;
     private Vector3 curr;
     private float i = 0;
@@ -25,7 +26,7 @@ public class MovablePlatform : MonoBehaviour, Activatable {
                 isMoving = false;
                 i = 0;
             }
-            i += 0.05f;
+            i += 0.01f * speed;
         }
     }
 
@@ -35,6 +36,7 @@ public class MovablePlatform : MonoBehaviour, Activatable {
             position++;
         }else position = 0;
         curr = platform.GetComponent<Transform>().position;
+        i = 0;
         isMoving = true;
     }
 }

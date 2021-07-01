@@ -10,7 +10,7 @@ public class PlantOnGarden : MonoBehaviour, Interactable{
     public GameState gameState;
 
     void Start() {
-        if(gameState.plantsObtained[plantNumber])plant.SetActive(true);
+        if(gameState.GetPlantState(plantNumber))plant.SetActive(true);
     }
 
     public void OnInteract() {

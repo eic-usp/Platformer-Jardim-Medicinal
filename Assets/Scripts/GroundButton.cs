@@ -3,13 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundButton : MonoBehaviour {
-    public GameObject door;
+    public GameObject[] doors;
+    public bool acceptDrone = true;
+    int isPressing = 0;
 
-    void OnTriggerStay2D(Collider2D collider) {
-        door.SetActive(false);
+    void OnTriggerEnter2D(Collider2D collider) {
+        if(CheckTag(collider)) {
+            if(isPressing == 0) {
+                foreach(GameObject door in doors) {
+                    door.GetComponent<Activatable>().OnActivate();
+                }
+                isPressing++;
+            }else isPressing++;
+        }
     }
 
     void OnTriggerExit2D(Collider2D collider) {
-        door.SetActive(true);
+        if(CheckTag(collider)) {
+            if(isPressing == 1) {
+                foreach(GameObject door in doors) {
+                    door.GetComponent<Activatable>().OnActivate();
+                }
+                isPressing--;
+            }else isPressing--;
+        }
+    }
+
+    bool CheckTag(Collider2D col) {
+        if(acceptDrone) {
+            return(col.tag != "Untagged");
+        }else return(col.tag != "Untagged"  && col.tag != "Drone");
     }
 }

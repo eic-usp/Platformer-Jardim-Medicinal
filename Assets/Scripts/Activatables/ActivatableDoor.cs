@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour, Activatable {
+public class ActivatableDoor : MonoBehaviour, Activatable {
     public GameObject doorColider;
     public Animator anim;
     public bool state = true;

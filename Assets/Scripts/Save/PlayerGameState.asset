@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ce764a256088041984f08090ac1197, type: 3}
   m_Name: PlayerGameState
   m_EditorClassIdentifier: 
-  plantsObtained: 0100000000000000
+  plantsObtained: 0000000000000000

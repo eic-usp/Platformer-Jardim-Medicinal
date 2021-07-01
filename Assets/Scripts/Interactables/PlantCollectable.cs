@@ -8,16 +8,12 @@ public class PlantCollectable : MonoBehaviour, Interactable{
     public GameState gameState;
 
     public void OnInteract() {
-        /*gameState.SetPlantAsCollected(plantNumber);*/
+        gameState.SetPlantAsCollected(plantNumber);
         GoToGarden();
     }
 
     void GoToGarden() {
         SceneLoader sceneLoader = GameObject.Find("SceneLoader").GetComponent<SceneLoader>();
         sceneLoader.LoadSceneByName("Garden");
-    }
-
-    void SetPlantAsCollected() {
-
     }
 }
