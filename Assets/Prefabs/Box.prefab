@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 1491237360340355418}
   - component: {fileID: 1491237360340355417}
   - component: {fileID: 5817813939638929276}
+  - component: {fileID: 6631059625204076881}
   m_Layer: 8
   m_Name: Box
   m_TagString: Interactable
@@ -277,6 +278,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMass: 5
   imovableMass: 5000
+--- !u!114 &6631059625204076881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491237360340355422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 000000009f8e76a7756e3169a7c4e8b6
+  m_ShapePath:
+  - {x: -0.48122594, y: -0.5102198, z: -0.00000028184877}
+  - {x: 0.51022255, y: -0.5029708, z: -0.00000028184877}
+  - {x: 0.51022255, y: 0.48847267, z: -0.00000028184877}
+  - {x: -0.4884724, y: 0.49572173, z: -0.00000028184877}
+  m_ShapePathHash: 1821873002
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -42648
 --- !u!1 &7182203558258519522
 GameObject:
   m_ObjectHideFlags: 0

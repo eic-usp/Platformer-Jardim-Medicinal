@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void FixedUpdate() {
 
         isGrounded();
         
@@ -142,4 +142,5 @@ public class PlayerMovement : MonoBehaviour {
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
+
 }

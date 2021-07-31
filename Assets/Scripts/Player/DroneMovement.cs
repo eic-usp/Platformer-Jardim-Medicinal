@@ -18,7 +18,7 @@ public class DroneMovement : MonoBehaviour {
     static int ONHOLD = 2;
     static int DISCONNECTED = 3;
     
-    //public PlayerAnimationController anim;
+    public Animator anim;
 
     [Header("Stats")]
     public float speed = 10;
@@ -45,6 +45,7 @@ public class DroneMovement : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         feet = this.gameObject.transform.GetChild(0).GetComponent<Transform>();
         player = GameObject.Find("PlayerSprite");
+        anim = player.GetComponent<Animator>();
         groundLayers = LayerMask.GetMask("Ground");
         onFlyingZone = true;
         ChangeModeTo(WITHPLAYER);
@@ -112,12 +113,14 @@ public class DroneMovement : MonoBehaviour {
     
     public void ChangeModeTo(int m) {
         if(m == WITHPLAYER) {
+            anim.SetBool("UsingDrone", false);
             this.rb.simulated = false;
             this.mode = WITHPLAYER;
             CanMove = false;
             MovementConstraints(true);
         }
         else if(m == FLYING) {
+            anim.SetBool("UsingDrone", true);
             this.rb.simulated = true;
             this.rb.gravityScale = 0;
             this.mode = FLYING;
@@ -125,11 +128,13 @@ public class DroneMovement : MonoBehaviour {
             MovementConstraints(false);
         }
         else if(m == ONHOLD) {
+            anim.SetBool("UsingDrone", false);
             this.mode = ONHOLD;
             CanMove = false;
             MovementConstraints(true);
         }
         else if(m == DISCONNECTED) {
+            anim.SetBool("UsingDrone", false);
             this.mode = DISCONNECTED;
             this.rb.simulated = true;
             CanMove = false;

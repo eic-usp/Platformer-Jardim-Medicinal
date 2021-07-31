@@ -181,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   parallaxFx: 0
+  followCam: 1
 --- !u!1 &6978351172112830607
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,6 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   parallaxFx: 1
+  followCam: 1
 --- !u!1 &6978351172622248033
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,6 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   parallaxFx: 0.5
+  followCam: 1
 --- !u!1 &6978351173144348144
 GameObject:
   m_ObjectHideFlags: 0
@@ -839,6 +842,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   parallaxFx: 0.3
+  followCam: 1
 --- !u!1 &6978351173756060757
 GameObject:
   m_ObjectHideFlags: 0

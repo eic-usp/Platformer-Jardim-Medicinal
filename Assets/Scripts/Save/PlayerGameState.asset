@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: PlayerGameState
   m_EditorClassIdentifier: 
   plantsObtained: 0000000000000000
+  stageCoins: 0000000000000000000000000000000000000000000000000000000000000000

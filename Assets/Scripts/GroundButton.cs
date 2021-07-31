@@ -5,6 +5,8 @@ using UnityEngine;
 public class GroundButton : MonoBehaviour {
     public GameObject[] doors;
     public bool acceptDrone = true;
+    public SpriteRenderer buttonSprite;
+    public Sprite[] sprites;
     int isPressing = 0;
 
     void OnTriggerEnter2D(Collider2D collider) {
@@ -14,6 +16,7 @@ public class GroundButton : MonoBehaviour {
                     door.GetComponent<Activatable>().OnActivate();
                 }
                 isPressing++;
+                buttonSprite.sprite = sprites[1];
             }else isPressing++;
         }
     }
@@ -25,6 +28,7 @@ public class GroundButton : MonoBehaviour {
                     door.GetComponent<Activatable>().OnActivate();
                 }
                 isPressing--;
+                buttonSprite.sprite = sprites[0];
             }else isPressing--;
         }
     }

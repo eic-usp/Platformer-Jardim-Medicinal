@@ -14,8 +14,10 @@ public class PlantOnGarden : MonoBehaviour, Interactable{
     }
 
     public void OnInteract() {
-        Debug.Log("interact");
-        infoMenu.SetActive(true);
+        if(gameState.GetPlantState(plantNumber)) {
+            GameObject.Find("PlayerSprite").GetComponent<PlayerMovement>().CanMove = false;
+            infoMenu.SetActive(true);
+        }
     }
 
 }

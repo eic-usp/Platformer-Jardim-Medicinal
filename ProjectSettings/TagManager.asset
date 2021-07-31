@@ -46,6 +46,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BGTiles
+    uniqueID: 61080327
+    locked: 0
   - name: Tiles
     uniqueID: 2809564831
     locked: 0
@@ -54,4 +57,7 @@ TagManager:
     locked: 0
   - name: Items
     uniqueID: 3068708007
+    locked: 0
+  - name: Foreground
+    uniqueID: 3022021907
     locked: 0
